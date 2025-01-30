@@ -1,0 +1,9 @@
+name: Github Action Practice
+run-name: ${{github.actor}}
+ 
+on: push
+jobs: 
+ push-actions-practice:
+  runs-on: ubuntu-latest
+  steps: 
+   - run: echo "push-actions-practice"
