@@ -1,0 +1,9 @@
+name: Github Action Practice
+run-name: ${{github.actor}}
+ 
+on: issues
+jobs: 
+ issues-Action:
+  runs-on: ubuntu-latest
+  steps: 
+   - run: echo "issues is working..."
