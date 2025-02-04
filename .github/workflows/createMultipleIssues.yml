@@ -1,0 +1,42 @@
+name: Create Multiple Issues
+ 
+on:
+  workflow_dispatch: # Trigger manually from GitHub UI
+ 
+jobs:
+  create-issues:
+    runs-on: ubuntu-latest
+ 
+    steps:
+      - name: Create Issues Based on Filter
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Token to authenticate API requests
+        run: |
+          # JSON object with issue data
+          issues='[
+            {"title": "Bug: Fix login issue", "body": "Details about the login bug.", "status": "open"},
+            {"title": "Feature: Add dark mode", "body": "Request to add dark mode.", "status": "closed"},
+            {"title": "Task: Update documentation", "body": "Documentation for v2.0 release.", "status": "open"}
+          ]'
+ 
+          # Loop through each issue and create only if status is 'open'
+          echo "$issues" | jq -c '.[]' | while read -r issue; do
+            status=$(echo "$issue" | jq -r '.status')
+            
+            if [ "$status" = "open" ]; then
+              title=$(echo "$issue" | jq -r '.title')
+              body=$(echo "$issue" | jq -r '.body')
+ 
+              # Create the issue using GitHub API
+              curl -s -X POST "https://api.github.com/repos/${{ github.repository }}/issues" \
+                -H "Authorization: token $GITHUB_TOKEN" \
+                -H "Accept: application/vnd.github.v3+json" \
+                -d "{\"title\": \"$title\", \"body\": \"$body\"}"
+ 
+              echo "✅ Issue created: $title"
+            else
+              echo "❌ Skipping issue (status: $status)"
+            fi
+          done
+
+

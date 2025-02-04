@@ -1,0 +1,19 @@
+name: Example Workflow
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  example-job:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Print vars context
+      run: |
+        echo "Repository Variable: ${{ vars.REPO_VAR }}"
+        echo "Organization Variable: ${{ vars.ORG_VAR }}"
+        echo "Environment Variable: ${{ vars.ENV_VAR }}"

@@ -1,0 +1,29 @@
+name: Deployment Workflow
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set DEPLOY_ENV variable
+      run: |
+        if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
+          echo "DEPLOY_ENV=production" >> $GITHUB_ENV
+        elif [[ "${{ github.ref }}" == "refs/heads/develop" ]]; then
+          echo "DEPLOY_ENV=staging" >> $GITHUB_ENV
+        fi
+
+    - name: Log DEPLOY_ENV
+      run: echo "DEPLOY_ENV is ${{ env.DEPLOY_ENV }}"
+
+    - name: Simulate deployment command
+      run: echo "Deploying to ${{ env.DEPLOY_ENV }} environment"

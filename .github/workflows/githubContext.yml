@@ -1,0 +1,33 @@
+name: Example Workflow
+
+on: [push]
+
+jobs:
+  example-job:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Print GitHub context
+      run: |
+        echo "Repository: ${{ github.repository }}"
+        echo "Actor: ${{ github.actor }}"
+        echo "Event Name: ${{ github.event_name }}"
+        echo "SHA: ${{ github.sha }}"
+        echo "Ref: ${{ github.ref }}"
+
+    - name: Print Environment Variables
+      run: |
+        echo "Home: ${{ env.HOME }}"
+        echo "Path: ${{ env.PATH }}"
+
+    - name: Print Job Context
+      run: echo "Job Status:${{ job.status }}"
+
+    - name: Print Runner Context
+      run: |
+        echo "Runner OS: ${{ runner.os }}"
+        echo "Runner Temp: ${{ runner.temp }}"
+        echo "Runner Workspace: ${{ runner.workspace }}"

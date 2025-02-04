@@ -1,0 +1,28 @@
+name: Example Workflow
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  example-job:
+    runs-on: ubuntu-latest
+
+    env:
+      GLOBAL_VAR: "This is a global variable"
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set environment variable for the job
+      run: echo "JOB_VAR=This is a job variable" >> $GITHUB_ENV
+
+    - name: Set environment variable for the step
+      run: echo "STEP_VAR=This is a step variable" >> $GITHUB_ENV
+
+    - name: Print environment variables
+      run: |
+        echo "Global Variable: ${{ env.GLOBAL_VAR }}"
+        echo "Job Variable: ${{ env.JOB_VAR }}"
+        echo "Step Variable: ${{ env.STEP_VAR }}"
